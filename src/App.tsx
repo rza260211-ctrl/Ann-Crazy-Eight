@@ -100,6 +100,13 @@ const PlayingCard = ({
 };
 
 const SuitSelector = ({ onSelect }: { onSelect: (suit: Suit) => void }) => {
+  const suitNames: Record<Suit, string> = {
+    hearts: '红桃',
+    diamonds: '方块',
+    clubs: '梅花',
+    spades: '黑桃'
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.9 }}
@@ -107,7 +114,7 @@ const SuitSelector = ({ onSelect }: { onSelect: (suit: Suit) => void }) => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
     >
       <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
-        <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Choose a Suit</h2>
+        <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">选择一个花色</h2>
         <div className="grid grid-cols-2 gap-4">
           {SUITS.map((suit) => (
             <button
@@ -120,7 +127,7 @@ const SuitSelector = ({ onSelect }: { onSelect: (suit: Suit) => void }) => {
             >
               <span className={`text-5xl mb-2 ${SUIT_COLORS[suit]}`}>{SUIT_SYMBOLS[suit]}</span>
               <span className="text-sm font-semibold text-slate-600 capitalize group-hover:text-indigo-600">
-                {suit}
+                {suitNames[suit]}
               </span>
             </button>
           ))}
@@ -153,11 +160,11 @@ const Splash = ({ onStart }: { onStart: () => void }) => {
         </div>
         
         <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tighter">
-          ANN <span className="text-indigo-400">CRAZY</span> EIGHTS
+          ANN <span className="text-indigo-400">疯狂</span> 8
         </h1>
         
         <p className="text-slate-400 text-lg md:text-xl font-medium mb-12 max-w-sm">
-          A premium card experience featuring the Year of the Horse.
+          马年主题的高级卡牌游戏体验。
         </p>
         
         <div className="flex flex-col gap-4 w-full">
@@ -165,19 +172,19 @@ const Splash = ({ onStart }: { onStart: () => void }) => {
             onClick={onStart}
             className="w-full py-5 bg-white hover:bg-slate-100 text-slate-900 rounded-2xl font-black text-xl shadow-xl transition-all flex items-center justify-center gap-3 group"
           >
-            START GAME
+            开始游戏
             <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
           </button>
           
           <div className="flex items-center justify-center gap-6 mt-4">
             <div className="flex flex-col items-center">
-              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Theme</span>
-              <span className="text-yellow-500 font-bold">Horse 2026</span>
+              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">主题</span>
+              <span className="text-yellow-500 font-bold">2026 马年</span>
             </div>
             <div className="w-px h-8 bg-slate-800" />
             <div className="flex flex-col items-center">
-              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Difficulty</span>
-              <span className="text-indigo-400 font-bold">Pro AI</span>
+              <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">难度</span>
+              <span className="text-indigo-400 font-bold">专业级 AI</span>
             </div>
           </div>
         </div>
@@ -225,7 +232,7 @@ export default function App() {
   const [gameState, setGameState] = useState<GameState>('splash');
   const [showSuitSelector, setShowSuitSelector] = useState(false);
   const [pendingEightCard, setPendingEightCard] = useState<Card | null>(null);
-  const [message, setMessage] = useState<string>("Welcome to Crazy Eights!");
+  const [message, setMessage] = useState<string>("欢迎来到疯狂8！");
   const [isAiThinking, setIsAiThinking] = useState(false);
 
   const gameInitRef = useRef(false);
@@ -428,15 +435,15 @@ export default function App() {
             <span className="font-black text-xl">8</span>
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-800">Ann Crazy Eights</h1>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-widest">Classic Card Game</p>
+            <h1 className="text-xl font-bold tracking-tight text-slate-800">Ann 疯狂 8</h1>
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-widest">经典卡牌游戏</p>
           </div>
         </div>
         
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full">
             <div className={`w-2 h-2 rounded-full ${turn === 'player' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} />
-            <span className="text-xs font-bold text-slate-600 uppercase">{turn === 'player' ? 'Your Turn' : "AI's Turn"}</span>
+            <span className="text-xs font-bold text-slate-600 uppercase">{turn === 'player' ? '轮到你' : "AI 正在思考"}</span>
           </div>
           <button 
             onClick={() => {
@@ -444,7 +451,7 @@ export default function App() {
               initGame();
             }}
             className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-            title="Restart Game"
+            title="重新开始"
           >
             <RotateCcw size={20} className="text-slate-600" />
           </button>
@@ -473,7 +480,7 @@ export default function App() {
               </motion.div>
             ))}
             {aiHand.length === 0 && gameState === 'playing' && (
-              <div className="text-slate-400 font-medium italic">AI is out of cards!</div>
+              <div className="text-slate-400 font-medium italic">AI 已经出完牌了！</div>
             )}
           </div>
         </div>
@@ -503,11 +510,11 @@ export default function App() {
                   </>
                 ) : (
                   <div className="w-24 h-36 md:w-32 md:h-48 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-300">
-                    Empty
+                    已空
                   </div>
                 )}
               </div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Draw ({deck.length})</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">摸牌堆 ({deck.length})</span>
             </div>
 
             {/* Discard Pile */}
@@ -537,7 +544,7 @@ export default function App() {
                   </motion.div>
                 )}
               </div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Discard</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">弃牌堆</span>
             </div>
           </div>
 
@@ -620,7 +627,7 @@ export default function App() {
               <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Trophy className="text-indigo-600" size={40} />
               </div>
-              <h2 className="text-3xl font-black text-slate-800 mb-2">Game Over</h2>
+              <h2 className="text-3xl font-black text-slate-800 mb-2">游戏结束</h2>
               <p className="text-slate-500 font-medium mb-8">{message}</p>
               
               <button
@@ -631,7 +638,7 @@ export default function App() {
                 className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 group"
               >
                 <RotateCcw size={20} className="group-hover:rotate-180 transition-transform duration-500" />
-                Play Again
+                再玩一次
               </button>
             </motion.div>
           </motion.div>
